@@ -9,11 +9,10 @@ DFRobot_PN532_IIC nfc(PN532_IRQ, POLLING);
 
 uint8_t dataRead[BLOCK_SIZE];
 
-// Le message à écrire dans le bloc 2 (16 caractères max, complété par des zéros si plus court)
-uint8_t dataWrite[BLOCK_SIZE] = "Atelier 3D-01"; // <-- change ici l'info que tu veux stocker
+//  Message write in the selected block (16 characters max, completed with 0 if shorter)
+uint8_t dataWrite[BLOCK_SIZE] = "HELLO NFC TAG"; // <-- Edit this part with the message you want to add to the card
 
-bool alreadyWritten = false; // pour n'écrire qu'une seule fois par passage de carte
-
+bool alreadyWritten = false; 
 void printBlock(uint8_t blockNumber) {
 
   Serial.print("Reading block ");
@@ -54,7 +53,7 @@ void printBlock(uint8_t blockNumber) {
   }
 }
 
-// Nouvelle fonction : écrire 16 octets dans un bloc donné
+// Function to write message in a selected Block
 void writeBlock(uint8_t blockNumber, uint8_t *data) {
 
   Serial.print("Writing block ");
@@ -97,7 +96,7 @@ void setup() {
 void loop() {
 
   if (!nfc.scan()) {
-    alreadyWritten = false; // carte retirée, on réarme pour la prochaine
+    alreadyWritten = false;
     return;
   }
 
@@ -106,18 +105,18 @@ void loop() {
   Serial.println("       CARD DETECTED");
   Serial.println("==============================");
 
-  // Lecture avant écriture (pour comparer)
+  //  Reading before writing
   printBlock(0);
   printBlock(2);
 
-  // Écriture du bloc 2 (une seule fois par passage de carte)
+  //  Write message in the 2nd Block 
   if (!alreadyWritten) {
-    writeBlock(2, dataWrite);
+    writeBlock(2, dataWrite); //Change 2 by another number to write into another Block
     alreadyWritten = true;
 
-    // Relecture pour confirmer que l'écriture a bien pris
-    Serial.println("Vérification après écriture :");
-    printBlock(2);
+    // Reading after writing new message
+    Serial.println("Check new mesage write :");
+    printBlock(2); // Edit the number with the same you add into the writeBlock function
   }
 
   Serial.println("==============================");

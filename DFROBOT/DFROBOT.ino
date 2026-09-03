@@ -123,12 +123,6 @@ void setup() {
   }
 
   Serial.println("NFC reader OK!");
-  // nfc.nfcPassword[0] = 0xC9;
-  // nfc.nfcPassword[1] = 0x39;
-  // nfc.nfcPassword[2] = 0x57;
-  // nfc.nfcPassword[3] = 0xB3;
-  // nfc.nfcPassword[4] = 0xD1;
-  // nfc.nfcPassword[5] = 0xCF;
   Serial.println();
   Serial.println("Place your NFC card on the reader...");
 }
