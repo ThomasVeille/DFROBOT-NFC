@@ -49,22 +49,28 @@ For the connection with the Arduino UNO board need to use the following table an
 For this code, the DRF0231-H have been use during the test.
 The code **DFROBOT** allow to know information about the Bambu Lab spool. The following information can be obtained :
 
-- Material variant
-- Material ID
-- Filament type
-- Detailed type
-- Color (RGBA)
-- Spool weight
-- Filament diameter
-- Drying
-- Bed temperature
-- Nozzle temperature
-- Spool width
-- Production date
-- Filament length
+```
+==============================
+       SPOOL DETECTED
+==============================
+Material variant: A00-K0.. | Material ID: GFA00...
+Filament type: PLA.............
+Detailed type: PLA Basic.......
+Color (RGBA): 000000FF
+Spool weight: 1000 g
+Filament diameter: 1.75 mm
+Drying: 55 C for 8h
+Bed temperature: 0 C
+Nozzle temperature: 190 - 230 C
+Tray UID: 4A 14 D8 7F 51 F0 40 54 9E 4A DB BD 7D 56 8C C3 
+Spool width: 28.75 mm
+Production date: 2025_04_24_08_15
+Filament length (approx): 330 m
+==============================
+```
 
-To have the information, need to place on the NFC card the Bambu spool few secondes. The information of the Bambu Lab will be write in the serial monitoring between **========== line**.
-All the information come from the following link : https://github.com/Bambu-Research-Group/RFID-Tag-Guide/blob/main/BambuLabRfid.md#block-5 . All the spool can't be print in the Arduino code because they don't have a lot of information (for the moment).
+To have the information, need to place on the NFC card the Bambu spool few secondes. 
+All the information come from the following link : https://github.com/Bambu-Research-Group/RFID-Tag-Guide/blob/main/BambuLabRfid.md#block-5 . All the spool information can't be print in the Arduino code because they don't have a lot of information (for the moment).
 ### B-WRITE
 
 For this code, the DFR0231-H have been use during the test.
@@ -84,3 +90,11 @@ printBlock(2);
 
 For this code need to use the RFID-RC522 board.
 The code **RC522** allow to read information of the NFC card or TAG. When a card or TAG is placed on the NFC board, all the information of the different BLOCK can be saw in HEXA. After we can enter a number to see the translate message in text.
+
+```
+Enter block number to convert to text :
+
+Reading saved block 2
+HEX : 48 45 4C 4C 4F 20 4E 46 43 20 54 41 47 00 00 00 
+TEXT: HELLO NFC TAG...
+```
