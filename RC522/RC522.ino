@@ -7,7 +7,6 @@
 MFRC522 rfid(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;
 
-// Stockage des blocs lus
 byte blockData[64][16];
 bool blockValid[64] = {false};
 
@@ -19,7 +18,6 @@ void setup() {
   SPI.begin();
   rfid.PCD_Init();
 
-  // Clé MIFARE par défaut
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
@@ -39,9 +37,8 @@ void loop() {
   Serial.println("\n--- CARD DETECTED ---");
 
 
-  // =========================
-  // AFFICHER L'UID
-  // =========================
+
+  // Print UID
 
   Serial.print("UID: ");
 
@@ -55,9 +52,7 @@ void loop() {
   Serial.println();
 
 
-  // =========================
-  // VERIFIER LE TYPE DE CARTE
-  // =========================
+  // Check card type
 
   MFRC522::PICC_Type type = rfid.PICC_GetType(rfid.uid.sak);
 
@@ -76,11 +71,8 @@ void loop() {
   Serial.println("Reading memory...");
 
 
-  // =========================
-  // LECTURE DES BLOCS
-  // =========================
+  // LECTURE DES BLOCS Read BLOCKS
 
-  // Ici on lit les blocs 1 à 63
   for (byte block = 1; block < 64; block++) {
 
     byte buffer[18];
@@ -95,10 +87,6 @@ void loop() {
 
     MFRC522::StatusCode status;
 
-
-    // =========================
-    // AUTHENTIFICATION
-    // =========================
 
     status = rfid.PCD_Authenticate(
       MFRC522::PICC_CMD_MF_AUTH_KEY_A,
@@ -119,9 +107,7 @@ void loop() {
     }
 
 
-    // =========================
-    // LECTURE DU BLOC
-    // =========================
+  // Read the BLOCK
 
     status = rfid.MIFARE_Read(block, buffer, &size);
 
@@ -137,9 +123,7 @@ void loop() {
     }
 
 
-    // =========================
-    // SAUVEGARDER LE BLOC
-    // =========================
+    // Save the BLOCK
 
     for (byte i = 0; i < 16; i++) {
 
@@ -150,8 +134,7 @@ void loop() {
 
 
     // =========================
-    // AFFICHER LE BLOC
-    // =========================
+    // Print the BLOCK
 
     Serial.print("Block ");
     Serial.print(block);
@@ -168,41 +151,31 @@ void loop() {
   }
 
 
-  // =========================
-  // FIN DE COMMUNICATION AVEC LE TAG
-  // =========================
-
   rfid.PICC_HaltA();
   rfid.PCD_StopCrypto1();
 
   Serial.println("--- DONE ---");
 
 
-  // =========================
-  // DEMANDER UN BLOC
-  // =========================
+  // Ask for a BLOCK to translate to text
 
   Serial.println();
   Serial.println("Enter block number to convert to text :");
 
 
   while (Serial.available() == 0) {
-    // Attendre que l'utilisateur entre un numéro
+    // Wait number from user
   }
 
 
   int blockNumber = Serial.parseInt();
 
 
-  // Nettoyer les éventuels caractères restants
   while (Serial.available() > 0) {
     Serial.read();
   }
 
-
-  // =========================
-  // AFFICHER LE BLOC CHOISI
-  // =========================
+  // Print the selected BLOCK
 
   readAndConvertBlock(blockNumber);
 
@@ -213,10 +186,6 @@ void loop() {
   delay(2000);
 }
 
-
-// =====================================================
-// FONCTION POUR AFFICHER UN BLOC SAUVEGARDE
-// =====================================================
 
 void readAndConvertBlock(byte blockNumber) {
 
@@ -244,10 +213,9 @@ void readAndConvertBlock(byte blockNumber) {
   Serial.println(blockNumber);
 
 
-  // =========================
-  // AFFICHAGE HEX
-  // =========================
 
+  // HEX print
+ 
   Serial.print("HEX : ");
 
   for (byte i = 0; i < 16; i++) {
@@ -262,9 +230,7 @@ void readAndConvertBlock(byte blockNumber) {
   Serial.println();
 
 
-  // =========================
-  // AFFICHAGE TEXT / ASCII
-  // =========================
+  // TEXT / ASCII print
 
   Serial.print("TEXT: ");
 
@@ -273,14 +239,12 @@ void readAndConvertBlock(byte blockNumber) {
     byte value = blockData[blockNumber][i];
 
 
-    // Caractères ASCII imprimables
     if (value >= 32 && value <= 126) {
 
       Serial.print((char)value);
 
     } else {
 
-      // Pour les 00, caractères non imprimables, etc.
       Serial.print(".");
     }
   }
