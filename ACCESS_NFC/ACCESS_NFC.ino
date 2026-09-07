@@ -61,7 +61,6 @@ const uint32_t accessDenied[] = {
   0x90108204
 };
 
-
 // EMPTY MATRIX
 const uint32_t matrixClear[] = {
   0x00000000,
