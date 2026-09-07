@@ -99,6 +99,41 @@ HEX : 48 45 4C 4C 4F 20 4E 46 43 20 54 41 47 00 00 00
 TEXT: HELLO NFC TAG...
 ```
 
-### C-ACCESS_NFC
+### D-ACCESS_NFC
 
+For this code need to use the RFID-RC522 board.
+The code **ACCESS_NFC** allow to accept/deny access of different card. To accept the access of one card, need to add the UID of the card on the following part : 
 
+```cpp
+// List of authorized UIDs
+byte authorizedUIDs[MAX_AUTHORIZED_TAGS][MAX_UID_SIZE] = {
+
+  // TAG 1
+  {0xF7, 0x66, 0xA9, 0x5F},
+
+  // TAG 2
+  // Example:
+  {0x47, 0xB8, 0x44, 0x62},
+
+};
+```
+To have the UID of on card, you can use the **UID_Information** code to recup the UID of one card.
+You need also to add the size of the UID, in the following part :
+
+```cpp
+// UID size of each authorized TAG
+byte authorizedUIDSizes[MAX_AUTHORIZED_TAGS] = {
+
+  // TAG 1
+  4,
+
+  // TAG 2
+  4,
+
+};
+```
+
+### E-UID_Inforamtion
+
+For this code need to use the RFID-RC522 board.
+The code **UID_Information** allow to have information about the card, the TAG you to use. The information you can have are the following : **UID**, **SAK** and **Card type**.
